@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bay of Bengal · Hilsha HSI Explorer</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<aside id="panel">
+  <header class="panel-head">
+    <h1>Bay of Bengal · Hilsha HSI</h1>
+    <p class="sub">Habitat Suitability Index for <i>Tenualosa ilisha</i> built from NASA Worldview (GIBS) ocean layers</p>
+    <p id="dates" class="dates">Contacting NASA GIBS…</p>
+  </header>
+
+  <section>
+    <h2>Ocean data layers</h2>
+
+    <div class="layer-row">
+      <label class="sw"><input type="checkbox" id="tgl-sst"><i></i></label>
+      <div class="layer-info">
+        <div class="layer-name" id="name-sst">Sea Surface Temperature</div>
+        <div class="layer-meta" id="meta-sst"></div>
+        <div class="legend" id="legend-sst" hidden>
+          <div class="grad" id="grad-sst"></div>
+          <div class="legend-lbl"><span id="min-sst"></span><span id="max-sst"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-row">
+      <label class="sw"><input type="checkbox" id="tgl-sss"><i></i></label>
+      <div class="layer-info">
+        <div class="layer-name" id="name-sss">Sea Surface Salinity</div>
+        <div class="layer-meta" id="meta-sss"></div>
+        <div class="legend" id="legend-sss" hidden>
+          <div class="grad" id="grad-sss"></div>
+          <div class="legend-lbl"><span id="min-sss"></span><span id="max-sss"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-row">
+      <label class="sw"><input type="checkbox" id="tgl-chl"><i></i></label>
+      <div class="layer-info">
+        <div class="layer-name" id="name-chl">Chlorophyll a</div>
+        <div class="layer-meta" id="meta-chl"></div>
+        <div class="legend" id="legend-chl" hidden>
+          <div class="grad" id="grad-chl"></div>
+          <div class="legend-lbl"><span id="min-chl"></span><span id="max-chl"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="layer-row">
+      <label class="sw"><input type="checkbox" id="tgl-labels"><i></i></label>
+      <div class="layer-info">
+        <div class="layer-name">Place labels</div>
+        <div class="layer-meta">Reference features (GIBS)</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Analysis grid</h2>
+    <div class="row">
+      <span class="row-label">Cell size</span>
+      <select id="grid-step">
+        <option value="0.25">0.25° × 0.25° (fine)</option>
+        <option value="0.5" selected>0.5° × 0.5° (default)</option>
+        <option value="1">1° × 1° (coarse)</option>
+      </select>
+    </div>
+    <div class="row">
+      <label class="sw"><input type="checkbox" id="tgl-grid"><i></i></label>
+      <span class="row-label">Show grid lines</span>
+      <span class="hint" id="gridinfo"></span>
+    </div>
+  </section>
+
+  <section id="hsi-section">
+    <h2>Hilsha HSI</h2>
+    <p class="formula">HSI = √( 0.40·S<sub>SST</sub>² + 0.30·S<sub>SSS</sub>² + 0.30·S<sub>Chl</sub>² )</p>
+    <div class="row">
+      <label class="sw"><input type="checkbox" id="tgl-hsi"><i></i></label>
+      <span class="row-label">Compute &amp; show HSI per grid cell</span>
+    </div>
+
+    <div class="legend hsi-legend">
+      <div class="grad" id="grad-hsi"></div>
+      <div class="legend-lbl" id="hsi-ticks"></div>
+    </div>
+
+    <div id="stats" hidden>
+      <h3>Result summary</h3>
+      <table id="stats-table"></table>
+      <h3>Best cells</h3>
+      <ol id="top-cells"></ol>
+      <button id="btn-csv" class="btn">Export grid (CSV)</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Suitability parameters</h2>
+    <p class="hint">Triangular membership: 0 at min/max, 1 at opt. Data ranges are the NASA GIBS legend extents.</p>
+    <div id="params"></div>
+    <button id="btn-params" class="btn">Apply &amp; recalculate</button>
+  </section>
+
+  <footer>
+    <ul id="notes"></ul>
+    <p class="src">Imagery &amp; colour scales: <a href="https://worldview.earthdata.nasa.gov/" target="_blank" rel="noopener">NASA Worldview</a> / GIBS</p>
+  </footer>
+</aside>
+
+<main id="map"></main>
+
+<div id="progress" class="hidden">
+  <div id="progress-text">Loading…</div>
+  <div class="track"><div id="progress-bar"></div></div>
+</div>
+
+<div id="banner" class="hidden"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/config.js"></script>
+<script src="js/colormap.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
